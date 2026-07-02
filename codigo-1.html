@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RODA — Código fuente</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--dark:#14171A;--light:#EDECE6;--orange:#E8542A;--green:#35634B;--line:#3a3f44;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--dark);color:var(--light);font-family:'Space Mono',monospace;}
+  header{padding:22px 24px;border-bottom:3px solid var(--orange);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  header h1{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:20px;margin:0;}
+  header h1 span{color:var(--orange);}
+  header p{margin:4px 0 0;font-size:12px;color:#9a9d98;}
+  .actions{display:flex;gap:10px;}
+  button{
+    font-family:'Space Mono',monospace;background:var(--orange);color:#fff;border:none;
+    padding:10px 16px;font-size:12px;border-radius:2px;cursor:pointer;letter-spacing:.03em;
+  }
+  button.secondary{background:transparent;border:1px solid var(--line);color:var(--light);}
+  button:hover{opacity:.9;}
+  main{padding:22px 24px 60px;}
+  pre{
+    background:#1E2226;border:1px solid var(--line);border-radius:2px;
+    padding:20px;overflow-x:auto;font-size:12.5px;line-height:1.6;white-space:pre;
+  }
+  .meta{font-size:11px;color:#787c76;margin-bottom:14px;}
+  #copyMsg{font-size:12px;color:var(--green);margin-left:8px;display:none;}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>RO<span>DA</span> — código fuente</h1>
+    <p>tienda.html · sitio completo (HTML + CSS + JS) para el proyecto final</p>
+  </div>
+  <div class="actions">
+    <button id="copyBtn">Copiar código</button>
+    <button class="secondary" id="downloadBtn">Descargar .html</button>
+  </div>
+</header>
+<main>
+  <div class="meta">Total: 782 líneas · Pega este código en un archivo llamado <strong>tienda.html</strong> y ábrelo en el navegador.<span id="copyMsg">¡Copiado!</span></div>
+  <pre id="codeBlock">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;RODA — Bicicletas&lt;/title&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;family=Space+Mono:wght@400;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  :root{
+    --dark:#14171A;
+    --dark-2:#1E2226;
+    --light:#EDECE6;
+    --paper:#FFFFFF;
+    --orange:#E8542A;
+    --green:#35634B;
+    --yellow:#F2B705;
+    --steel:#9AA0A6;
+    --line:#D8D6CC;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:&#x27;Work Sans&#x27;,sans-serif;
+    background:var(--light);
+    color:var(--dark);
+    line-height:1.5;
+  }
+  h1,h2,h3,.brand,.tag-cat,nav a,button{font-family:&#x27;Oswald&#x27;,sans-serif;text-transform:uppercase;letter-spacing:.03em;}
+  .mono{font-family:&#x27;Space Mono&#x27;,monospace;}
+  a{color:inherit;text-decoration:none;}
+  button{cursor:pointer;border:none;font-weight:600;}
+  img,svg{display:block;}
+
+  /* ---- Header ---- */
+  header{
+    background:var(--dark);
+    color:var(--light);
+    position:sticky;top:0;z-index:40;
+    border-bottom:3px solid var(--orange);
+  }
+  .header-inner{
+    max-width:1200px;margin:0 auto;padding:14px 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{font-size:24px;font-weight:700;letter-spacing:.08em;}
+  .brand span{color:var(--orange);}
+  nav{display:flex;gap:22px;align-items:center;}
+  nav a{font-size:14px;font-weight:500;color:var(--light);opacity:.85;padding:6px 2px;border-bottom:2px solid transparent;}
+  nav a:hover{opacity:1;border-color:var(--orange);}
+  nav a.active{opacity:1;border-color:var(--orange);}
+  .header-actions{display:flex;align-items:center;gap:10px;}
+  .icon-btn{
+    background:transparent;color:var(--light);border:1px solid #3a3f44;
+    padding:8px 12px;font-size:13px;display:flex;align-items:center;gap:8px;border-radius:var(--radius);
+  }
+  .icon-btn:hover{border-color:var(--orange);}
+  .cart-count{
+    background:var(--orange);color:#fff;font-size:11px;font-family:&#x27;Space Mono&#x27;,monospace;
+    padding:1px 6px;border-radius:10px;min-width:18px;text-align:center;
+  }
+  #adminNavBtn{display:none;}
+
+  /* ---- Hero ---- */
+  .hero{
+    background:var(--dark);color:var(--light);
+    padding:64px 20px 40px;position:relative;overflow:hidden;
+  }
+  .hero-inner{max-width:1200px;margin:0 auto;}
+  .eyebrow{color:var(--yellow);font-family:&#x27;Space Mono&#x27;,monospace;font-size:13px;letter-spacing:.15em;margin-bottom:14px;}
+  .hero h1{font-size:clamp(34px,6vw,64px);font-weight:700;line-height:1.02;max-width:780px;}
+  .hero h1 em{font-style:normal;color:var(--orange);}
+  .hero p{margin-top:18px;max-width:520px;color:#c9cbc7;font-size:16px;}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+  .chip{
+    background:transparent;border:1px solid #3a3f44;color:var(--light);
+    padding:9px 16px;font-size:13px;border-radius:20px;font-family:&#x27;Work Sans&#x27;,sans-serif;text-transform:none;letter-spacing:0;
+  }
+  .chip:hover,.chip.active{background:var(--orange);border-color:var(--orange);color:#fff;}
+
+  /* chain divider — signature element */
+  .chain-divider{
+    height:26px;width:100%;
+    background-image:radial-gradient(circle,var(--dark) 0 6px, transparent 6.5px);
+    background-size:26px 26px;background-position:center;
+    background-color:var(--light);
+  }
+
+  /* ---- Toolbar ---- */
+  .toolbar{
+    max-width:1200px;margin:0 auto;padding:26px 20px 6px;
+    display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+  }
+  .search-sort{display:flex;gap:10px;flex-wrap:wrap;}
+  input[type=search],select{
+    font-family:&#x27;Work Sans&#x27;,sans-serif;font-size:14px;padding:9px 12px;
+    border:1px solid var(--line);background:var(--paper);border-radius:var(--radius);
+  }
+  .results-count{font-family:&#x27;Space Mono&#x27;,monospace;font-size:12px;color:#5b5f5a;}
+
+  /* ---- Catalog ---- */
+  main{max-width:1200px;margin:0 auto;padding:16px 20px 60px;}
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;margin-top:18px;
+  }
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    position:relative;padding-top:14px;display:flex;flex-direction:column;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(20,23,26,.12);}
+  .punch{
+    width:14px;height:14px;border-radius:50%;background:var(--light);
+    border:2px dashed var(--steel);position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+  }
+  .card-media{
+    height:140px;margin:14px 14px 0;border-radius:var(--radius);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1;}
+  .tag-cat{font-size:11px;color:var(--green);letter-spacing:.1em;}
+  .card h3{font-size:19px;font-weight:600;text-transform:none;letter-spacing:0;}
+  .card-desc{font-size:13px;color:#5b5f5a;flex:1;}
+  .card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+  .price{font-size:20px;font-weight:700;}
+  .stock{font-size:11px;font-family:&#x27;Space Mono&#x27;,monospace;color:var(--steel);}
+  .stock.low{color:var(--orange);}
+  .add-btn{
+    width:100%;margin-top:12px;background:var(--dark);color:var(--light);
+    padding:10px;font-size:13px;border-radius:var(--radius);
+  }
+  .add-btn:hover{background:var(--orange);}
+  .add-btn:disabled{background:#c9c9c3;color:#8a8a83;cursor:not-allowed;}
+  .dash-line{border-top:1px dashed var(--line);margin:0 14px;}
+
+  .empty-msg{padding:60px 20px;text-align:center;color:#7a7d78;font-family:&#x27;Space Mono&#x27;,monospace;}
+
+  /* ---- Cart drawer ---- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(20,23,26,.5);z-index:60;
+    opacity:0;pointer-events:none;transition:opacity .2s ease;
+  }
+  .overlay.open{opacity:1;pointer-events:auto;}
+  .drawer{
+    position:fixed;top:0;right:0;height:100%;width:min(420px,100%);
+    background:var(--paper);z-index:70;transform:translateX(100%);
+    transition:transform .25s ease;display:flex;flex-direction:column;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    padding:20px;display:flex;justify-content:space-between;align-items:center;
+    border-bottom:1px solid var(--line);background:var(--dark);color:var(--light);
+  }
+  .drawer-head h2{font-size:20px;}
+  .close-btn{background:transparent;color:inherit;font-size:20px;padding:4px 8px;}
+  .drawer-items{flex:1;overflow-y:auto;padding:12px 20px;}
+  .cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center;}
+  .ci-media{width:56px;height:56px;border-radius:var(--radius);flex:none;display:flex;align-items:center;justify-content:center;}
+  .ci-info{flex:1;}
+  .ci-info h4{font-size:14px;font-family:&#x27;Work Sans&#x27;,sans-serif;text-transform:none;font-weight:600;}
+  .ci-price{font-size:12px;color:#5b5f5a;margin-top:2px;}
+  .qty-stepper{display:flex;align-items:center;gap:8px;margin-top:8px;}
+  .qty-stepper button{
+    width:22px;height:22px;background:var(--light);border:1px solid var(--line);border-radius:var(--radius);font-size:13px;
+  }
+  .qty-stepper span{font-family:&#x27;Space Mono&#x27;,monospace;font-size:13px;min-width:16px;text-align:center;}
+  .remove-x{background:transparent;color:var(--orange);font-size:12px;font-family:&#x27;Work Sans&#x27;,sans-serif;text-transform:none;text-decoration:underline;}
+  .drawer-foot{padding:18px 20px 22px;border-top:1px solid var(--line);}
+  .row-between{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;}
+  .row-total{font-size:18px;font-weight:700;margin-top:8px;padding-top:10px;border-top:1px dashed var(--line);}
+  .checkout-btn{
+    width:100%;margin-top:14px;padding:13px;background:var(--orange);color:#fff;border-radius:var(--radius);font-size:14px;
+  }
+  .checkout-btn:disabled{background:#d8d6cc;color:#8a8a83;cursor:not-allowed;}
+
+  /* ---- Modals ---- */
+  .modal-wrap{
+    position:fixed;inset:0;background:rgba(20,23,26,.6);z-index:80;
+    display:none;align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-wrap.open{display:flex;}
+  .modal{
+    background:var(--paper);width:100%;max-width:420px;border-radius:var(--radius);
+    padding:28px;position:relative;max-height:90vh;overflow-y:auto;
+  }
+  .modal h2{font-size:22px;margin-bottom:6px;}
+  .modal p.hint{font-size:12px;color:#5b5f5a;margin-bottom:18px;font-family:&#x27;Space Mono&#x27;,monospace;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12px;font-weight:600;margin-bottom:5px;color:#3a3d38;}
+  .field input,.field select,.field textarea{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);font-family:&#x27;Work Sans&#x27;,sans-serif;font-size:14px;
+  }
+  .field textarea{resize:vertical;min-height:60px;}
+  .modal .submit-btn{
+    width:100%;padding:12px;background:var(--dark);color:var(--light);border-radius:var(--radius);margin-top:6px;font-size:13px;
+  }
+  .modal .submit-btn:hover{background:var(--orange);}
+  .modal-close{position:absolute;top:14px;right:16px;background:transparent;font-size:20px;color:#5b5f5a;}
+  .form-error{color:var(--orange);font-size:12px;margin-top:8px;display:none;}
+  .success-box{text-align:center;padding:10px 0;}
+  .success-box .big-check{font-size:44px;color:var(--green);margin-bottom:10px;}
+  .order-id{font-family:&#x27;Space Mono&#x27;,monospace;background:var(--light);padding:8px 12px;display:inline-block;margin-top:10px;border-radius:var(--radius);}
+
+  /* ---- Admin section ---- */
+  #adminSection{display:none;}
+  .admin-head{display:flex;justify-content:space-between;align-items:center;margin:30px 0 10px;flex-wrap:wrap;gap:10px;}
+  .admin-panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:26px;}
+  .admin-panel h3{font-size:16px;margin-bottom:16px;}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);}
+  th{font-family:&#x27;Space Mono&#x27;,monospace;font-weight:400;color:#5b5f5a;font-size:11px;text-transform:uppercase;}
+  .row-actions button{
+    font-family:&#x27;Work Sans&#x27;,sans-serif;font-size:12px;text-transform:none;letter-spacing:0;
+    background:transparent;padding:4px 8px;border-radius:var(--radius);margin-right:6px;
+  }
+  .btn-edit{color:var(--green);border:1px solid var(--green);}
+  .btn-delete{color:var(--orange);border:1px solid var(--orange);}
+  .logout-btn{background:transparent;color:var(--orange);border:1px solid var(--orange);padding:8px 14px;border-radius:var(--radius);font-size:12px;}
+
+  /* ---- Toast ---- */
+  #toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--dark);color:var(--light);padding:12px 22px;border-radius:var(--radius);
+    font-size:13px;z-index:100;opacity:0;pointer-events:none;transition:all .25s ease;
+    border-left:3px solid var(--orange);
+  }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  footer{background:var(--dark);color:#9a9d98;padding:34px 20px;font-size:13px;}
+  footer .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;}
+  footer strong{color:var(--light);}
+  .note-db{max-width:1200px;margin:0 auto 0;padding-top:14px;border-top:1px solid #2a2e32;font-family:&#x27;Space Mono&#x27;,monospace;font-size:11px;color:#787c76;}
+
+  @media(max-width:640px){
+    nav{display:none;}
+    .hero{padding:44px 16px 30px;}
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;header&gt;
+  &lt;div class=&quot;header-inner&quot;&gt;
+    &lt;div class=&quot;brand&quot;&gt;RO&lt;span&gt;DA&lt;/span&gt;&lt;/div&gt;
+    &lt;nav&gt;
+      &lt;a href=&quot;#&quot; class=&quot;active&quot; data-view=&quot;catalog&quot;&gt;Catálogo&lt;/a&gt;
+      &lt;a href=&quot;#&quot; data-view=&quot;nosotros&quot;&gt;Nosotros&lt;/a&gt;
+      &lt;a href=&quot;#&quot; data-view=&quot;contacto&quot;&gt;Contacto&lt;/a&gt;
+      &lt;a href=&quot;#&quot; id=&quot;adminNavBtn&quot; data-view=&quot;admin&quot;&gt;Panel Admin&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;header-actions&quot;&gt;
+      &lt;button class=&quot;icon-btn&quot; id=&quot;loginBtn&quot;&gt;Iniciar sesión&lt;/button&gt;
+      &lt;button class=&quot;icon-btn&quot; id=&quot;cartBtn&quot;&gt;Carrito &lt;span class=&quot;cart-count mono&quot; id=&quot;cartCount&quot;&gt;0&lt;/span&gt;&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+
+&lt;section class=&quot;hero&quot; id=&quot;heroSection&quot;&gt;
+  &lt;div class=&quot;hero-inner&quot;&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;TALLER Y TIENDA DE BICICLETAS&lt;/div&gt;
+    &lt;h1&gt;Bicicletas para &lt;em&gt;cada camino&lt;/em&gt;, cada ritmo.&lt;/h1&gt;
+    &lt;p&gt;Montaña, ruta, urbanas y eléctricas — seleccionadas y revisadas antes de salir de la tienda. Envío a todo el país.&lt;/p&gt;
+    &lt;div class=&quot;chips&quot; id=&quot;categoryChips&quot;&gt;
+      &lt;button class=&quot;chip active&quot; data-cat=&quot;todas&quot;&gt;Todas&lt;/button&gt;
+      &lt;button class=&quot;chip&quot; data-cat=&quot;montana&quot;&gt;Montaña&lt;/button&gt;
+      &lt;button class=&quot;chip&quot; data-cat=&quot;ruta&quot;&gt;Ruta&lt;/button&gt;
+      &lt;button class=&quot;chip&quot; data-cat=&quot;urbana&quot;&gt;Urbana&lt;/button&gt;
+      &lt;button class=&quot;chip&quot; data-cat=&quot;electrica&quot;&gt;Eléctrica&lt;/button&gt;
+      &lt;button class=&quot;chip&quot; data-cat=&quot;infantil&quot;&gt;Infantil&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+&lt;div class=&quot;chain-divider&quot;&gt;&lt;/div&gt;
+
+&lt;main&gt;
+  &lt;div id=&quot;catalogView&quot;&gt;
+    &lt;div class=&quot;toolbar&quot;&gt;
+      &lt;div class=&quot;results-count&quot; id=&quot;resultsCount&quot;&gt;0 bicicletas&lt;/div&gt;
+      &lt;div class=&quot;search-sort&quot;&gt;
+        &lt;input type=&quot;search&quot; id=&quot;searchInput&quot; placeholder=&quot;Buscar bicicleta...&quot;&gt;
+        &lt;select id=&quot;sortSelect&quot;&gt;
+          &lt;option value=&quot;default&quot;&gt;Ordenar por&lt;/option&gt;
+          &lt;option value=&quot;price-asc&quot;&gt;Precio: menor a mayor&lt;/option&gt;
+          &lt;option value=&quot;price-desc&quot;&gt;Precio: mayor a menor&lt;/option&gt;
+          &lt;option value=&quot;name-asc&quot;&gt;Nombre: A–Z&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;grid&quot; id=&quot;productGrid&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div id=&quot;nosotrosView&quot; style=&quot;display:none;padding:30px 0;max-width:640px;&quot;&gt;
+    &lt;h2 style=&quot;font-size:26px;margin-bottom:12px;&quot;&gt;Sobre RODA&lt;/h2&gt;
+    &lt;p style=&quot;color:#3a3d38;&quot;&gt;Somos una tienda dedicada a la venta y mantenimiento de bicicletas. Este sitio es un proyecto de práctica: catálogo, carrito de compra y panel de administración, construidos como ejercicio para el proyecto final.&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;div id=&quot;contactoView&quot; style=&quot;display:none;padding:30px 0;max-width:480px;&quot;&gt;
+    &lt;h2 style=&quot;font-size:26px;margin-bottom:12px;&quot;&gt;Contacto&lt;/h2&gt;
+    &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Nombre&lt;/label&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Tu nombre&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Correo&lt;/label&gt;&lt;input type=&quot;email&quot; placeholder=&quot;tu@correo.com&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Mensaje&lt;/label&gt;&lt;textarea placeholder=&quot;¿En qué te ayudamos?&quot;&gt;&lt;/textarea&gt;&lt;/div&gt;
+    &lt;button class=&quot;submit-btn&quot; style=&quot;max-width:220px;&quot; onclick=&quot;showToast(&#x27;Mensaje enviado (simulado)&#x27;)&quot;&gt;Enviar mensaje&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- ADMIN --&gt;
+  &lt;div id=&quot;adminSection&quot;&gt;
+    &lt;div class=&quot;admin-head&quot;&gt;
+      &lt;h2 style=&quot;font-size:24px;&quot;&gt;Panel de administración&lt;/h2&gt;
+      &lt;button class=&quot;logout-btn&quot; id=&quot;logoutBtn&quot;&gt;Cerrar sesión&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;admin-panel&quot;&gt;
+      &lt;h3 id=&quot;formTitle&quot;&gt;Agregar bicicleta&lt;/h3&gt;
+      &lt;div class=&quot;form-grid&quot;&gt;
+        &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Nombre&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;f-name&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Categoría&lt;/label&gt;
+          &lt;select id=&quot;f-cat&quot;&gt;
+            &lt;option value=&quot;montana&quot;&gt;Montaña&lt;/option&gt;
+            &lt;option value=&quot;ruta&quot;&gt;Ruta&lt;/option&gt;
+            &lt;option value=&quot;urbana&quot;&gt;Urbana&lt;/option&gt;
+            &lt;option value=&quot;electrica&quot;&gt;Eléctrica&lt;/option&gt;
+            &lt;option value=&quot;infantil&quot;&gt;Infantil&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Precio (Bs.)&lt;/label&gt;&lt;input type=&quot;number&quot; id=&quot;f-price&quot; min=&quot;0&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Existencias&lt;/label&gt;&lt;input type=&quot;number&quot; id=&quot;f-stock&quot; min=&quot;0&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Descripción corta&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;f-desc&quot;&gt;&lt;/div&gt;
+      &lt;button class=&quot;submit-btn&quot; style=&quot;max-width:220px;&quot; id=&quot;saveProductBtn&quot;&gt;Guardar&lt;/button&gt;
+      &lt;button class=&quot;logout-btn&quot; id=&quot;cancelEditBtn&quot; style=&quot;display:none;margin-left:10px;&quot;&gt;Cancelar edición&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;admin-panel&quot;&gt;
+      &lt;h3&gt;Inventario (&lt;span id=&quot;invCount&quot;&gt;0&lt;/span&gt;)&lt;/h3&gt;
+      &lt;div style=&quot;overflow-x:auto;&quot;&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Nombre&lt;/th&gt;&lt;th&gt;Categoría&lt;/th&gt;&lt;th&gt;Precio&lt;/th&gt;&lt;th&gt;Stock&lt;/th&gt;&lt;th&gt;Acciones&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody id=&quot;adminTableBody&quot;&gt;&lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+
+&lt;!-- Cart drawer --&gt;
+&lt;div class=&quot;overlay&quot; id=&quot;overlay&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;drawer&quot; id=&quot;cartDrawer&quot;&gt;
+  &lt;div class=&quot;drawer-head&quot;&gt;&lt;h2&gt;Tu carrito&lt;/h2&gt;&lt;button class=&quot;close-btn&quot; id=&quot;closeCart&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+  &lt;div class=&quot;drawer-items&quot; id=&quot;cartItems&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;drawer-foot&quot;&gt;
+    &lt;div class=&quot;row-between&quot;&gt;&lt;span&gt;Subtotal&lt;/span&gt;&lt;span class=&quot;mono&quot; id=&quot;subtotalVal&quot;&gt;Bs. 0&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;row-between&quot;&gt;&lt;span&gt;Envío&lt;/span&gt;&lt;span class=&quot;mono&quot; id=&quot;shippingVal&quot;&gt;Bs. 0&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;row-between row-total&quot;&gt;&lt;span&gt;Total&lt;/span&gt;&lt;span class=&quot;mono&quot; id=&quot;totalVal&quot;&gt;Bs. 0&lt;/span&gt;&lt;/div&gt;
+    &lt;button class=&quot;checkout-btn&quot; id=&quot;checkoutBtn&quot; disabled&gt;Finalizar compra&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Login modal --&gt;
+&lt;div class=&quot;modal-wrap&quot; id=&quot;loginModal&quot;&gt;
+  &lt;div class=&quot;modal&quot;&gt;
+    &lt;button class=&quot;modal-close&quot; data-close=&quot;loginModal&quot;&gt;✕&lt;/button&gt;
+    &lt;h2&gt;Iniciar sesión&lt;/h2&gt;
+    &lt;p class=&quot;hint&quot;&gt;admin / admin123 — acceso al panel de administración&lt;/p&gt;
+    &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Usuario&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;loginUser&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Contraseña&lt;/label&gt;&lt;input type=&quot;password&quot; id=&quot;loginPass&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;form-error&quot; id=&quot;loginError&quot;&gt;Usuario o contraseña incorrectos.&lt;/div&gt;
+    &lt;button class=&quot;submit-btn&quot; id=&quot;loginSubmit&quot;&gt;Entrar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Checkout modal --&gt;
+&lt;div class=&quot;modal-wrap&quot; id=&quot;checkoutModal&quot;&gt;
+  &lt;div class=&quot;modal&quot;&gt;
+    &lt;button class=&quot;modal-close&quot; data-close=&quot;checkoutModal&quot;&gt;✕&lt;/button&gt;
+    &lt;div id=&quot;checkoutForm&quot;&gt;
+      &lt;h2&gt;Finalizar compra&lt;/h2&gt;
+      &lt;p class=&quot;hint&quot;&gt;Compra simulada — no se procesan pagos reales&lt;/p&gt;
+      &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Nombre completo&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;co-name&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Correo&lt;/label&gt;&lt;input type=&quot;email&quot; id=&quot;co-email&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Dirección de entrega&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;co-address&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Método de pago&lt;/label&gt;
+        &lt;select id=&quot;co-payment&quot;&gt;
+          &lt;option&gt;Contra entrega&lt;/option&gt;
+          &lt;option&gt;Transferencia bancaria&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;form-error&quot; id=&quot;checkoutError&quot;&gt;Por favor completa todos los campos.&lt;/div&gt;
+      &lt;button class=&quot;submit-btn&quot; id=&quot;confirmOrderBtn&quot;&gt;Confirmar pedido&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;checkoutSuccess&quot; style=&quot;display:none;&quot; class=&quot;success-box&quot;&gt;
+      &lt;div class=&quot;big-check&quot;&gt;✓&lt;/div&gt;
+      &lt;h2&gt;¡Pedido confirmado!&lt;/h2&gt;
+      &lt;p style=&quot;color:#5b5f5a;font-size:14px;margin-top:6px;&quot;&gt;Te contactaremos pronto para coordinar la entrega.&lt;/p&gt;
+      &lt;div class=&quot;order-id mono&quot; id=&quot;orderIdDisplay&quot;&gt;&lt;/div&gt;
+      &lt;button class=&quot;submit-btn&quot; style=&quot;margin-top:20px;&quot; id=&quot;closeSuccessBtn&quot;&gt;Seguir comprando&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;toast&quot;&gt;&lt;/div&gt;
+
+&lt;footer&gt;
+  &lt;div class=&quot;footer-inner&quot;&gt;
+    &lt;div&gt;&lt;strong&gt;RODA&lt;/strong&gt; — Tienda de bicicletas&lt;br&gt;La Paz, Bolivia&lt;/div&gt;
+    &lt;div&gt;contacto@roda-bicicletas.com&lt;br&gt;+57 300 000 0000&lt;/div&gt;
+    &lt;div&gt;Catálogo · Carrito · Panel administrativo&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;note-db&quot;&gt;NOTA: proyecto académico. Los productos se guardan en memoria durante la sesión (no hay base de datos conectada); al recargar la página el inventario vuelve a sus valores iniciales.&lt;/div&gt;
+&lt;/footer&gt;
+
+&lt;script&gt;
+/* =========================================================
+   RODA — Tienda de bicicletas
+   Catálogo + Carrito + Panel Admin (todo en un solo archivo)
+   ========================================================= */
+
+/* ---------- Datos iniciales (simulan una tabla &quot;bicicletas&quot;) ---------- */
+let products = [
+  {id:&#x27;b1&#x27;, name:&#x27;Montaña Sierra 27.5&#x27;, cat:&#x27;montana&#x27;, price:2600, stock:6, desc:&#x27;Cuadro de aluminio, suspensión delantera, 21 velocidades.&#x27;},
+  {id:&#x27;b2&#x27;, name:&#x27;Montaña Roca X5&#x27;, cat:&#x27;montana&#x27;, price:3400, stock:3, desc:&#x27;Doble suspensión, frenos de disco hidráulicos.&#x27;},
+  {id:&#x27;b3&#x27;, name:&#x27;Ruta Veloce Carbon&#x27;, cat:&#x27;ruta&#x27;, price:6200, stock:2, desc:&#x27;Cuadro de fibra de carbono, grupo Shimano 105.&#x27;},
+  {id:&#x27;b4&#x27;, name:&#x27;Ruta Speedster&#x27;, cat:&#x27;ruta&#x27;, price:3900, stock:5, desc:&#x27;Aluminio ligero, ideal para ciclismo de fondo.&#x27;},
+  {id:&#x27;b5&#x27;, name:&#x27;Urbana City Cruiser&#x27;, cat:&#x27;urbana&#x27;, price:1450, stock:10, desc:&#x27;Canasta frontal, guardabarros, 7 velocidades.&#x27;},
+  {id:&#x27;b6&#x27;, name:&#x27;Urbana Retro Line&#x27;, cat:&#x27;urbana&#x27;, price:1650, stock:8, desc:&#x27;Estilo vintage, marco de acero, sillín confort.&#x27;},
+  {id:&#x27;b7&#x27;, name:&#x27;Eléctrica Volt 350&#x27;, cat:&#x27;electrica&#x27;, price:7800, stock:4, desc:&#x27;Motor 350W, batería 40km de autonomía.&#x27;},
+  {id:&#x27;b8&#x27;, name:&#x27;Eléctrica Urban-E Plus&#x27;, cat:&#x27;electrica&#x27;, price:9200, stock:0, desc:&#x27;Pantalla LCD, asistencia al pedaleo 5 niveles.&#x27;},
+  {id:&#x27;b9&#x27;, name:&#x27;Infantil Rueditas 16&quot;&#x27;, cat:&#x27;infantil&#x27;, price:620, stock:12, desc:&#x27;Rines 16&quot;, rueditas de apoyo incluidas.&#x27;},
+  {id:&#x27;b10&#x27;, name:&#x27;Infantil Explorer Jr.&#x27;, cat:&#x27;infantil&#x27;, price:830, stock:7, desc:&#x27;Rines 20&quot;, frenos tipo V, cuadro reforzado.&#x27;}
+];
+
+const CAT_LABELS = {montana:&#x27;Montaña&#x27;, ruta:&#x27;Ruta&#x27;, urbana:&#x27;Urbana&#x27;, electrica:&#x27;Eléctrica&#x27;, infantil:&#x27;Infantil&#x27;};
+const CAT_COLORS = {montana:&#x27;#35634B&#x27;, ruta:&#x27;#E8542A&#x27;, urbana:&#x27;#9AA0A6&#x27;, electrica:&#x27;#F2B705&#x27;, infantil:&#x27;#3a6ea5&#x27;};
+
+const ADMIN_USER = &#x27;admin&#x27;;
+const ADMIN_PASS = &#x27;admin123&#x27;;
+
+/* ---------- Estado ---------- */
+let cart = {};           // { productId: qty }
+let currentCat = &#x27;todas&#x27;;
+let searchTerm = &#x27;&#x27;;
+let sortMode = &#x27;default&#x27;;
+let isAdmin = false;
+let editingId = null;
+
+/* ---------- Utilidades ---------- */
+function money(n){
+  return &#x27;Bs. &#x27; + n.toLocaleString(&#x27;es-BO&#x27;);
+}
+function bikeIcon(color){
+  return `&lt;svg width=&quot;70&quot; height=&quot;50&quot; viewBox=&quot;0 0 70 50&quot; fill=&quot;none&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;
+    &lt;circle cx=&quot;15&quot; cy=&quot;36&quot; r=&quot;12&quot; stroke=&quot;${color}&quot; stroke-width=&quot;3&quot;/&gt;
+    &lt;circle cx=&quot;55&quot; cy=&quot;36&quot; r=&quot;12&quot; stroke=&quot;${color}&quot; stroke-width=&quot;3&quot;/&gt;
+    &lt;path d=&quot;M15 36L30 14H42M15 36L30 22L46 36M42 14L46 36M42 14L36 8&quot; stroke=&quot;${color}&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+    &lt;circle cx=&quot;55&quot; cy=&quot;36&quot; r=&quot;2.4&quot; fill=&quot;${color}&quot;/&gt;
+  &lt;/svg&gt;`;
+}
+function showToast(msg){
+  const t = document.getElementById(&#x27;toast&#x27;);
+  t.textContent = msg;
+  t.classList.add(&#x27;show&#x27;);
+  clearTimeout(showToast._tm);
+  showToast._tm = setTimeout(()=&gt;t.classList.remove(&#x27;show&#x27;), 2400);
+}
+
+/* ---------- Render catálogo ---------- */
+function getFilteredProducts(){
+  let list = products.slice();
+  if(currentCat !== &#x27;todas&#x27;) list = list.filter(p=&gt;p.cat===currentCat);
+  if(searchTerm.trim()) list = list.filter(p=&gt;p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  if(sortMode===&#x27;price-asc&#x27;) list.sort((a,b)=&gt;a.price-b.price);
+  if(sortMode===&#x27;price-desc&#x27;) list.sort((a,b)=&gt;b.price-a.price);
+  if(sortMode===&#x27;name-asc&#x27;) list.sort((a,b)=&gt;a.name.localeCompare(b.name));
+  return list;
+}
+
+function renderCatalog(){
+  const grid = document.getElementById(&#x27;productGrid&#x27;);
+  const list = getFilteredProducts();
+  document.getElementById(&#x27;resultsCount&#x27;).textContent = list.length + (list.length===1?&#x27; bicicleta&#x27;:&#x27; bicicletas&#x27;);
+
+  if(list.length===0){
+    grid.innerHTML = &#x27;&lt;div class=&quot;empty-msg&quot; style=&quot;grid-column:1/-1;&quot;&gt;No encontramos bicicletas con esos filtros.&lt;/div&gt;&#x27;;
+    return;
+  }
+
+  grid.innerHTML = list.map(p=&gt;{
+    const color = CAT_COLORS[p.cat];
+    const noStock = p.stock&lt;=0;
+    return `
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;punch&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;card-media&quot; style=&quot;background:${color}1A;&quot;&gt;${bikeIcon(color)}&lt;/div&gt;
+      &lt;div class=&quot;dash-line&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;card-body&quot;&gt;
+        &lt;div class=&quot;tag-cat&quot; style=&quot;color:${color};&quot;&gt;${CAT_LABELS[p.cat]}&lt;/div&gt;
+        &lt;h3&gt;${p.name}&lt;/h3&gt;
+        &lt;div class=&quot;card-desc&quot;&gt;${p.desc}&lt;/div&gt;
+        &lt;div class=&quot;card-foot&quot;&gt;
+          &lt;span class=&quot;price mono&quot;&gt;${money(p.price)}&lt;/span&gt;
+          &lt;span class=&quot;stock ${p.stock&lt;=2 &amp;&amp; p.stock&gt;0?&#x27;low&#x27;:&#x27;&#x27;}&quot;&gt;${noStock?&#x27;agotado&#x27;:p.stock+&#x27; disp.&#x27;}&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;button class=&quot;add-btn&quot; ${noStock?&#x27;disabled&#x27;:&#x27;&#x27;} onclick=&quot;addToCart(&#x27;${p.id}&#x27;)&quot;&gt;${noStock?&#x27;Sin existencias&#x27;:&#x27;Agregar al carrito&#x27;}&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;`;
+  }).join(&#x27;&#x27;);
+}
+
+/* ---------- Carrito ---------- */
+function addToCart(id){
+  const p = products.find(x=&gt;x.id===id);
+  if(!p || p.stock&lt;=0) return;
+  const inCart = cart[id]||0;
+  if(inCart &gt;= p.stock){ showToast(&#x27;No hay más existencias disponibles&#x27;); return; }
+  cart[id] = inCart+1;
+  renderCart();
+  showToast(p.name + &#x27; agregada al carrito&#x27;);
+}
+function changeQty(id, delta){
+  const p = products.find(x=&gt;x.id===id);
+  let qty = (cart[id]||0) + delta;
+  if(qty&lt;=0){ delete cart[id]; }
+  else if(qty &gt; p.stock){ showToast(&#x27;No hay más existencias disponibles&#x27;); return; }
+  else { cart[id] = qty; }
+  renderCart();
+}
+function removeFromCart(id){
+  delete cart[id];
+  renderCart();
+}
+function cartTotalItems(){
+  return Object.values(cart).reduce((a,b)=&gt;a+b,0);
+}
+function renderCart(){
+  document.getElementById(&#x27;cartCount&#x27;).textContent = cartTotalItems();
+  const wrap = document.getElementById(&#x27;cartItems&#x27;);
+  const ids = Object.keys(cart);
+
+  if(ids.length===0){
+    wrap.innerHTML = &#x27;&lt;div class=&quot;empty-msg&quot;&gt;Tu carrito está vacío.&lt;/div&gt;&#x27;;
+  } else {
+    wrap.innerHTML = ids.map(id=&gt;{
+      const p = products.find(x=&gt;x.id===id);
+      if(!p) return &#x27;&#x27;;
+      const color = CAT_COLORS[p.cat];
+      return `
+      &lt;div class=&quot;cart-item&quot;&gt;
+        &lt;div class=&quot;ci-media&quot; style=&quot;background:${color}1A;&quot;&gt;${bikeIcon(color)}&lt;/div&gt;
+        &lt;div class=&quot;ci-info&quot;&gt;
+          &lt;h4&gt;${p.name}&lt;/h4&gt;
+          &lt;div class=&quot;ci-price mono&quot;&gt;${money(p.price)}&lt;/div&gt;
+          &lt;div class=&quot;qty-stepper&quot;&gt;
+            &lt;button onclick=&quot;changeQty(&#x27;${id}&#x27;,-1)&quot;&gt;−&lt;/button&gt;
+            &lt;span&gt;${cart[id]}&lt;/span&gt;
+            &lt;button onclick=&quot;changeQty(&#x27;${id}&#x27;,1)&quot;&gt;+&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;button class=&quot;remove-x&quot; onclick=&quot;removeFromCart(&#x27;${id}&#x27;)&quot;&gt;Quitar&lt;/button&gt;
+      &lt;/div&gt;`;
+    }).join(&#x27;&#x27;);
+  }
+
+  const subtotal = ids.reduce((sum,id)=&gt;{
+    const p = products.find(x=&gt;x.id===id);
+    return sum + (p ? p.price*cart[id] : 0);
+  },0);
+  const shipping = subtotal&gt;0 ? (subtotal&gt;4000?0:60) : 0;
+  const total = subtotal + shipping;
+
+  document.getElementById(&#x27;subtotalVal&#x27;).textContent = money(subtotal);
+  document.getElementById(&#x27;shippingVal&#x27;).textContent = shipping===0 ? &#x27;Gratis&#x27; : money(shipping);
+  document.getElementById(&#x27;totalVal&#x27;).textContent = money(total);
+  document.getElementById(&#x27;checkoutBtn&#x27;).disabled = ids.length===0;
+}
+
+/* ---------- Drawer / modales open-close ---------- */
+function openDrawer(){
+  document.getElementById(&#x27;cartDrawer&#x27;).classList.add(&#x27;open&#x27;);
+  document.getElementById(&#x27;overlay&#x27;).classList.add(&#x27;open&#x27;);
+}
+function closeDrawer(){
+  document.getElementById(&#x27;cartDrawer&#x27;).classList.remove(&#x27;open&#x27;);
+  document.getElementById(&#x27;overlay&#x27;).classList.remove(&#x27;open&#x27;);
+}
+function openModal(id){ document.getElementById(id).classList.add(&#x27;open&#x27;); }
+function closeModal(id){ document.getElementById(id).classList.remove(&#x27;open&#x27;); }
+
+document.getElementById(&#x27;cartBtn&#x27;).onclick = openDrawer;
+document.getElementById(&#x27;closeCart&#x27;).onclick = closeDrawer;
+document.getElementById(&#x27;overlay&#x27;).onclick = closeDrawer;
+document.querySelectorAll(&#x27;[data-close]&#x27;).forEach(btn=&gt;{
+  btn.onclick = ()=&gt;closeModal(btn.dataset.close);
+});
+
+/* ---------- Login ---------- */
+document.getElementById(&#x27;loginBtn&#x27;).onclick = ()=&gt;openModal(&#x27;loginModal&#x27;);
+
+document.getElementById(&#x27;loginSubmit&#x27;).onclick = ()=&gt;{
+  const u = document.getElementById(&#x27;loginUser&#x27;).value.trim();
+  const p = document.getElementById(&#x27;loginPass&#x27;).value.trim();
+  if(u===ADMIN_USER &amp;&amp; p===ADMIN_PASS){
+    isAdmin = true;
+    document.getElementById(&#x27;adminNavBtn&#x27;).style.display = &#x27;inline&#x27;;
+    document.getElementById(&#x27;loginBtn&#x27;).textContent = &#x27;Sesión: admin&#x27;;
+    document.getElementById(&#x27;loginError&#x27;).style.display = &#x27;none&#x27;;
+    closeModal(&#x27;loginModal&#x27;);
+    showToast(&#x27;Sesión iniciada como administrador&#x27;);
+    document.getElementById(&#x27;loginUser&#x27;).value=&#x27;&#x27;;
+    document.getElementById(&#x27;loginPass&#x27;).value=&#x27;&#x27;;
+  } else {
+    document.getElementById(&#x27;loginError&#x27;).style.display = &#x27;block&#x27;;
+  }
+};
+
+document.getElementById(&#x27;logoutBtn&#x27;).onclick = ()=&gt;{
+  isAdmin = false;
+  document.getElementById(&#x27;adminNavBtn&#x27;).style.display = &#x27;none&#x27;;
+  document.getElementById(&#x27;loginBtn&#x27;).textContent = &#x27;Iniciar sesión&#x27;;
+  switchView(&#x27;catalog&#x27;);
+  showToast(&#x27;Sesión cerrada&#x27;);
+};
+
+/* ---------- Navegación entre vistas ---------- */
+function switchView(view){
+  document.getElementById(&#x27;catalogView&#x27;).style.display = view===&#x27;catalog&#x27; ? &#x27;&#x27; : &#x27;none&#x27;;
+  document.getElementById(&#x27;nosotrosView&#x27;).style.display = view===&#x27;nosotros&#x27; ? &#x27;&#x27; : &#x27;none&#x27;;
+  document.getElementById(&#x27;contactoView&#x27;).style.display = view===&#x27;contacto&#x27; ? &#x27;&#x27; : &#x27;none&#x27;;
+  document.getElementById(&#x27;adminSection&#x27;).style.display = view===&#x27;admin&#x27; ? &#x27;&#x27; : &#x27;none&#x27;;
+  document.getElementById(&#x27;heroSection&#x27;).style.display = view===&#x27;catalog&#x27; ? &#x27;&#x27; : &#x27;none&#x27;;
+  document.querySelector(&#x27;.chain-divider&#x27;).style.display = view===&#x27;catalog&#x27; ? &#x27;&#x27; : &#x27;none&#x27;;
+
+  document.querySelectorAll(&#x27;nav a&#x27;).forEach(a=&gt;a.classList.toggle(&#x27;active&#x27;, a.dataset.view===view));
+  if(view===&#x27;admin&#x27;) renderAdminTable();
+}
+document.querySelectorAll(&#x27;nav a[data-view]&#x27;).forEach(a=&gt;{
+  a.onclick = (e)=&gt;{
+    e.preventDefault();
+    if(a.dataset.view===&#x27;admin&#x27; &amp;&amp; !isAdmin) return;
+    switchView(a.dataset.view);
+  };
+});
+
+/* ---------- Filtros / búsqueda / orden ---------- */
+document.querySelectorAll(&#x27;.chip&#x27;).forEach(chip=&gt;{
+  chip.onclick = ()=&gt;{
+    document.querySelectorAll(&#x27;.chip&#x27;).forEach(c=&gt;c.classList.remove(&#x27;active&#x27;));
+    chip.classList.add(&#x27;active&#x27;);
+    currentCat = chip.dataset.cat;
+    renderCatalog();
+  };
+});
+document.getElementById(&#x27;searchInput&#x27;).oninput = (e)=&gt;{
+  searchTerm = e.target.value;
+  renderCatalog();
+};
+document.getElementById(&#x27;sortSelect&#x27;).onchange = (e)=&gt;{
+  sortMode = e.target.value;
+  renderCatalog();
+};
+
+/* ---------- Checkout ---------- */
+document.getElementById(&#x27;checkoutBtn&#x27;).onclick = ()=&gt;{
+  closeDrawer();
+  document.getElementById(&#x27;checkoutForm&#x27;).style.display=&#x27;block&#x27;;
+  document.getElementById(&#x27;checkoutSuccess&#x27;).style.display=&#x27;none&#x27;;
+  openModal(&#x27;checkoutModal&#x27;);
+};
+document.getElementById(&#x27;confirmOrderBtn&#x27;).onclick = ()=&gt;{
+  const name = document.getElementById(&#x27;co-name&#x27;).value.trim();
+  const email = document.getElementById(&#x27;co-email&#x27;).value.trim();
+  const addr = document.getElementById(&#x27;co-address&#x27;).value.trim();
+  if(!name || !email || !addr){
+    document.getElementById(&#x27;checkoutError&#x27;).style.display=&#x27;block&#x27;;
+    return;
+  }
+  document.getElementById(&#x27;checkoutError&#x27;).style.display=&#x27;none&#x27;;
+
+  // descontar stock (simulado)
+  Object.keys(cart).forEach(id=&gt;{
+    const p = products.find(x=&gt;x.id===id);
+    if(p) p.stock = Math.max(0, p.stock - cart[id]);
+  });
+  cart = {};
+  renderCart();
+  renderCatalog();
+
+  const orderId = &#x27;RODA-&#x27; + Math.floor(100000+Math.random()*900000);
+  document.getElementById(&#x27;orderIdDisplay&#x27;).textContent = &#x27;Pedido No. &#x27; + orderId;
+  document.getElementById(&#x27;checkoutForm&#x27;).style.display=&#x27;none&#x27;;
+  document.getElementById(&#x27;checkoutSuccess&#x27;).style.display=&#x27;block&#x27;;
+
+  document.getElementById(&#x27;co-name&#x27;).value=&#x27;&#x27;;
+  document.getElementById(&#x27;co-email&#x27;).value=&#x27;&#x27;;
+  document.getElementById(&#x27;co-address&#x27;).value=&#x27;&#x27;;
+};
+document.getElementById(&#x27;closeSuccessBtn&#x27;).onclick = ()=&gt;closeModal(&#x27;checkoutModal&#x27;);
+
+/* ---------- Admin: tabla ---------- */
+function renderAdminTable(){
+  const body = document.getElementById(&#x27;adminTableBody&#x27;);
+  document.getElementById(&#x27;invCount&#x27;).textContent = products.length;
+  body.innerHTML = products.map(p=&gt;`
+    &lt;tr&gt;
+      &lt;td&gt;${p.name}&lt;/td&gt;
+      &lt;td&gt;${CAT_LABELS[p.cat]}&lt;/td&gt;
+      &lt;td class=&quot;mono&quot;&gt;${money(p.price)}&lt;/td&gt;
+      &lt;td class=&quot;mono&quot;&gt;${p.stock}&lt;/td&gt;
+      &lt;td class=&quot;row-actions&quot;&gt;
+        &lt;button class=&quot;btn-edit&quot; onclick=&quot;startEdit(&#x27;${p.id}&#x27;)&quot;&gt;Editar&lt;/button&gt;
+        &lt;button class=&quot;btn-delete&quot; onclick=&quot;deleteProduct(&#x27;${p.id}&#x27;)&quot;&gt;Eliminar&lt;/button&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;`).join(&#x27;&#x27;);
+}
+
+function startEdit(id){
+  const p = products.find(x=&gt;x.id===id);
+  if(!p) return;
+  editingId = id;
+  document.getElementById(&#x27;f-name&#x27;).value = p.name;
+  document.getElementById(&#x27;f-cat&#x27;).value = p.cat;
+  document.getElementById(&#x27;f-price&#x27;).value = p.price;
+  document.getElementById(&#x27;f-stock&#x27;).value = p.stock;
+  document.getElementById(&#x27;f-desc&#x27;).value = p.desc;
+  document.getElementById(&#x27;formTitle&#x27;).textContent = &#x27;Editar bicicleta&#x27;;
+  document.getElementById(&#x27;saveProductBtn&#x27;).textContent = &#x27;Guardar cambios&#x27;;
+  document.getElementById(&#x27;cancelEditBtn&#x27;).style.display = &#x27;inline-block&#x27;;
+  window.scrollTo({top:0,behavior:&#x27;smooth&#x27;});
+}
+
+function resetForm(){
+  editingId = null;
+  [&#x27;f-name&#x27;,&#x27;f-price&#x27;,&#x27;f-stock&#x27;,&#x27;f-desc&#x27;].forEach(id=&gt;document.getElementById(id).value=&#x27;&#x27;);
+  document.getElementById(&#x27;f-cat&#x27;).value=&#x27;montana&#x27;;
+  document.getElementById(&#x27;formTitle&#x27;).textContent = &#x27;Agregar bicicleta&#x27;;
+  document.getElementById(&#x27;saveProductBtn&#x27;).textContent = &#x27;Guardar&#x27;;
+  document.getElementById(&#x27;cancelEditBtn&#x27;).style.display = &#x27;none&#x27;;
+}
+document.getElementById(&#x27;cancelEditBtn&#x27;).onclick = resetForm;
+
+document.getElementById(&#x27;saveProductBtn&#x27;).onclick = ()=&gt;{
+  const name = document.getElementById(&#x27;f-name&#x27;).value.trim();
+  const cat = document.getElementById(&#x27;f-cat&#x27;).value;
+  const price = Number(document.getElementById(&#x27;f-price&#x27;).value);
+  const stock = Number(document.getElementById(&#x27;f-stock&#x27;).value);
+  const desc = document.getElementById(&#x27;f-desc&#x27;).value.trim();
+
+  if(!name || !price || price&lt;=0 || stock&lt;0 || isNaN(stock)){
+    showToast(&#x27;Completa nombre, precio y existencias válidas&#x27;);
+    return;
+  }
+
+  if(editingId){
+    const p = products.find(x=&gt;x.id===editingId);
+    Object.assign(p, {name, cat, price, stock, desc});
+    showToast(&#x27;Bicicleta actualizada&#x27;);
+  } else {
+    const id = &#x27;b&#x27; + (Date.now());
+    products.push({id, name, cat, price, stock, desc});
+    showToast(&#x27;Bicicleta agregada al inventario&#x27;);
+  }
+  resetForm();
+  renderAdminTable();
+  renderCatalog();
+};
+
+function deleteProduct(id){
+  if(!confirm(&#x27;¿Eliminar esta bicicleta del inventario?&#x27;)) return;
+  products = products.filter(p=&gt;p.id!==id);
+  delete cart[id];
+  renderAdminTable();
+  renderCatalog();
+  renderCart();
+  showToast(&#x27;Bicicleta eliminada&#x27;);
+}
+
+/* ---------- Inicio ---------- */
+renderCatalog();
+renderCart();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</main>
+<script>
+document.getElementById('copyBtn').onclick = async ()=>{
+  const text = document.getElementById('codeBlock').textContent;
+  try{
+    await navigator.clipboard.writeText(text);
+    const msg = document.getElementById('copyMsg');
+    msg.style.display='inline';
+    setTimeout(()=>msg.style.display='none', 2000);
+  }catch(e){
+    alert('No se pudo copiar automáticamente. Selecciona el texto manualmente.');
+  }
+};
+document.getElementById('downloadBtn').onclick = ()=>{
+  const text = document.getElementById('codeBlock').textContent;
+  const blob = new Blob([text], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'tienda.html';
+  a.click();
+};
+</script>
+</body>
+</html>
