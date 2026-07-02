@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RODA — Bicicletas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark:#14171A;
+    --dark-2:#1E2226;
+    --light:#EDECE6;
+    --paper:#FFFFFF;
+    --orange:#E8542A;
+    --green:#35634B;
+    --yellow:#F2B705;
+    --steel:#9AA0A6;
+    --line:#D8D6CC;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Work Sans',sans-serif;
+    background:var(--light);
+    color:var(--dark);
+    line-height:1.5;
+  }
+  h1,h2,h3,.brand,.tag-cat,nav a,button{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.03em;}
+  .mono{font-family:'Space Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  button{cursor:pointer;border:none;font-weight:600;}
+  img,svg{display:block;}
+
+  /* ---- Header ---- */
+  header{
+    background:var(--dark);
+    color:var(--light);
+    position:sticky;top:0;z-index:40;
+    border-bottom:3px solid var(--orange);
+  }
+  .header-inner{
+    max-width:1200px;margin:0 auto;padding:14px 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{font-size:24px;font-weight:700;letter-spacing:.08em;}
+  .brand span{color:var(--orange);}
+  nav{display:flex;gap:22px;align-items:center;}
+  nav a{font-size:14px;font-weight:500;color:var(--light);opacity:.85;padding:6px 2px;border-bottom:2px solid transparent;}
+  nav a:hover{opacity:1;border-color:var(--orange);}
+  nav a.active{opacity:1;border-color:var(--orange);}
+  .header-actions{display:flex;align-items:center;gap:10px;}
+  .icon-btn{
+    background:transparent;color:var(--light);border:1px solid #3a3f44;
+    padding:8px 12px;font-size:13px;display:flex;align-items:center;gap:8px;border-radius:var(--radius);
+  }
+  .icon-btn:hover{border-color:var(--orange);}
+  .cart-count{
+    background:var(--orange);color:#fff;font-size:11px;font-family:'Space Mono',monospace;
+    padding:1px 6px;border-radius:10px;min-width:18px;text-align:center;
+  }
+  #adminNavBtn{display:none;}
+
+  /* ---- Hero ---- */
+  .hero{
+    background:var(--dark);color:var(--light);
+    padding:64px 20px 40px;position:relative;overflow:hidden;
+  }
+  .hero-inner{max-width:1200px;margin:0 auto;}
+  .eyebrow{color:var(--yellow);font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.15em;margin-bottom:14px;}
+  .hero h1{font-size:clamp(34px,6vw,64px);font-weight:700;line-height:1.02;max-width:780px;}
+  .hero h1 em{font-style:normal;color:var(--orange);}
+  .hero p{margin-top:18px;max-width:520px;color:#c9cbc7;font-size:16px;}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+  .chip{
+    background:transparent;border:1px solid #3a3f44;color:var(--light);
+    padding:9px 16px;font-size:13px;border-radius:20px;font-family:'Work Sans',sans-serif;text-transform:none;letter-spacing:0;
+  }
+  .chip:hover,.chip.active{background:var(--orange);border-color:var(--orange);color:#fff;}
+
+  /* chain divider — signature element */
+  .chain-divider{
+    height:26px;width:100%;
+    background-image:radial-gradient(circle,var(--dark) 0 6px, transparent 6.5px);
+    background-size:26px 26px;background-position:center;
+    background-color:var(--light);
+  }
+
+  /* ---- Toolbar ---- */
+  .toolbar{
+    max-width:1200px;margin:0 auto;padding:26px 20px 6px;
+    display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+  }
+  .search-sort{display:flex;gap:10px;flex-wrap:wrap;}
+  input[type=search],select{
+    font-family:'Work Sans',sans-serif;font-size:14px;padding:9px 12px;
+    border:1px solid var(--line);background:var(--paper);border-radius:var(--radius);
+  }
+  .results-count{font-family:'Space Mono',monospace;font-size:12px;color:#5b5f5a;}
+
+  /* ---- Catalog ---- */
+  main{max-width:1200px;margin:0 auto;padding:16px 20px 60px;}
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;margin-top:18px;
+  }
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    position:relative;padding-top:14px;display:flex;flex-direction:column;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(20,23,26,.12);}
+  .punch{
+    width:14px;height:14px;border-radius:50%;background:var(--light);
+    border:2px dashed var(--steel);position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+  }
+  .card-media{
+    height:140px;margin:14px 14px 0;border-radius:var(--radius);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1;}
+  .tag-cat{font-size:11px;color:var(--green);letter-spacing:.1em;}
+  .card h3{font-size:19px;font-weight:600;text-transform:none;letter-spacing:0;}
+  .card-desc{font-size:13px;color:#5b5f5a;flex:1;}
+  .card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+  .price{font-size:20px;font-weight:700;}
+  .stock{font-size:11px;font-family:'Space Mono',monospace;color:var(--steel);}
+  .stock.low{color:var(--orange);}
+  .add-btn{
+    width:100%;margin-top:12px;background:var(--dark);color:var(--light);
+    padding:10px;font-size:13px;border-radius:var(--radius);
+  }
+  .add-btn:hover{background:var(--orange);}
+  .add-btn:disabled{background:#c9c9c3;color:#8a8a83;cursor:not-allowed;}
+  .dash-line{border-top:1px dashed var(--line);margin:0 14px;}
+
+  .empty-msg{padding:60px 20px;text-align:center;color:#7a7d78;font-family:'Space Mono',monospace;}
+
+  /* ---- Cart drawer ---- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(20,23,26,.5);z-index:60;
+    opacity:0;pointer-events:none;transition:opacity .2s ease;
+  }
+  .overlay.open{opacity:1;pointer-events:auto;}
+  .drawer{
+    position:fixed;top:0;right:0;height:100%;width:min(420px,100%);
+    background:var(--paper);z-index:70;transform:translateX(100%);
+    transition:transform .25s ease;display:flex;flex-direction:column;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    padding:20px;display:flex;justify-content:space-between;align-items:center;
+    border-bottom:1px solid var(--line);background:var(--dark);color:var(--light);
+  }
+  .drawer-head h2{font-size:20px;}
+  .close-btn{background:transparent;color:inherit;font-size:20px;padding:4px 8px;}
+  .drawer-items{flex:1;overflow-y:auto;padding:12px 20px;}
+  .cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center;}
+  .ci-media{width:56px;height:56px;border-radius:var(--radius);flex:none;display:flex;align-items:center;justify-content:center;}
+  .ci-info{flex:1;}
+  .ci-info h4{font-size:14px;font-family:'Work Sans',sans-serif;text-transform:none;font-weight:600;}
+  .ci-price{font-size:12px;color:#5b5f5a;margin-top:2px;}
+  .qty-stepper{display:flex;align-items:center;gap:8px;margin-top:8px;}
+  .qty-stepper button{
+    width:22px;height:22px;background:var(--light);border:1px solid var(--line);border-radius:var(--radius);font-size:13px;
+  }
+  .qty-stepper span{font-family:'Space Mono',monospace;font-size:13px;min-width:16px;text-align:center;}
+  .remove-x{background:transparent;color:var(--orange);font-size:12px;font-family:'Work Sans',sans-serif;text-transform:none;text-decoration:underline;}
+  .drawer-foot{padding:18px 20px 22px;border-top:1px solid var(--line);}
+  .row-between{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;}
+  .row-total{font-size:18px;font-weight:700;margin-top:8px;padding-top:10px;border-top:1px dashed var(--line);}
+  .checkout-btn{
+    width:100%;margin-top:14px;padding:13px;background:var(--orange);color:#fff;border-radius:var(--radius);font-size:14px;
+  }
+  .checkout-btn:disabled{background:#d8d6cc;color:#8a8a83;cursor:not-allowed;}
+
+  /* ---- Modals ---- */
+  .modal-wrap{
+    position:fixed;inset:0;background:rgba(20,23,26,.6);z-index:80;
+    display:none;align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-wrap.open{display:flex;}
+  .modal{
+    background:var(--paper);width:100%;max-width:420px;border-radius:var(--radius);
+    padding:28px;position:relative;max-height:90vh;overflow-y:auto;
+  }
+  .modal h2{font-size:22px;margin-bottom:6px;}
+  .modal p.hint{font-size:12px;color:#5b5f5a;margin-bottom:18px;font-family:'Space Mono',monospace;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12px;font-weight:600;margin-bottom:5px;color:#3a3d38;}
+  .field input,.field select,.field textarea{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);font-family:'Work Sans',sans-serif;font-size:14px;
+  }
+  .field textarea{resize:vertical;min-height:60px;}
+  .modal .submit-btn{
+    width:100%;padding:12px;background:var(--dark);color:var(--light);border-radius:var(--radius);margin-top:6px;font-size:13px;
+  }
+  .modal .submit-btn:hover{background:var(--orange);}
+  .modal-close{position:absolute;top:14px;right:16px;background:transparent;font-size:20px;color:#5b5f5a;}
+  .form-error{color:var(--orange);font-size:12px;margin-top:8px;display:none;}
+  .success-box{text-align:center;padding:10px 0;}
+  .success-box .big-check{font-size:44px;color:var(--green);margin-bottom:10px;}
+  .order-id{font-family:'Space Mono',monospace;background:var(--light);padding:8px 12px;display:inline-block;margin-top:10px;border-radius:var(--radius);}
+
+  /* ---- Admin section ---- */
+  #adminSection{display:none;}
+  .admin-head{display:flex;justify-content:space-between;align-items:center;margin:30px 0 10px;flex-wrap:wrap;gap:10px;}
+  .admin-panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:26px;}
+  .admin-panel h3{font-size:16px;margin-bottom:16px;}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);}
+  th{font-family:'Space Mono',monospace;font-weight:400;color:#5b5f5a;font-size:11px;text-transform:uppercase;}
+  .row-actions button{
+    font-family:'Work Sans',sans-serif;font-size:12px;text-transform:none;letter-spacing:0;
+    background:transparent;padding:4px 8px;border-radius:var(--radius);margin-right:6px;
+  }
+  .btn-edit{color:var(--green);border:1px solid var(--green);}
+  .btn-delete{color:var(--orange);border:1px solid var(--orange);}
+  .logout-btn{background:transparent;color:var(--orange);border:1px solid var(--orange);padding:8px 14px;border-radius:var(--radius);font-size:12px;}
+
+  /* ---- Toast ---- */
+  #toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--dark);color:var(--light);padding:12px 22px;border-radius:var(--radius);
+    font-size:13px;z-index:100;opacity:0;pointer-events:none;transition:all .25s ease;
+    border-left:3px solid var(--orange);
+  }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  footer{background:var(--dark);color:#9a9d98;padding:34px 20px;font-size:13px;}
+  footer .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;}
+  footer strong{color:var(--light);}
+  .note-db{max-width:1200px;margin:0 auto 0;padding-top:14px;border-top:1px solid #2a2e32;font-family:'Space Mono',monospace;font-size:11px;color:#787c76;}
+
+  @media(max-width:640px){
+    nav{display:none;}
+    .hero{padding:44px 16px 30px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">RO<span>DA</span></div>
+    <nav>
+      <a href="#" class="active" data-view="catalog">Catálogo</a>
+      <a href="#" data-view="nosotros">Nosotros</a>
+      <a href="#" data-view="contacto">Contacto</a>
+      <a href="#" id="adminNavBtn" data-view="admin">Panel Admin</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="loginBtn">Iniciar sesión</button>
+      <button class="icon-btn" id="cartBtn">Carrito <span class="cart-count mono" id="cartCount">0</span></button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="heroSection">
+  <div class="hero-inner">
+    <div class="eyebrow">TALLER Y TIENDA DE BICICLETAS</div>
+    <h1>Bicicletas para <em>cada camino</em>, cada ritmo.</h1>
+    <p>Montaña, ruta, urbanas y eléctricas — seleccionadas y revisadas antes de salir de la tienda. Envío a todo el país.</p>
+    <div class="chips" id="categoryChips">
+      <button class="chip active" data-cat="todas">Todas</button>
+      <button class="chip" data-cat="montana">Montaña</button>
+      <button class="chip" data-cat="ruta">Ruta</button>
+      <button class="chip" data-cat="urbana">Urbana</button>
+      <button class="chip" data-cat="electrica">Eléctrica</button>
+      <button class="chip" data-cat="infantil">Infantil</button>
+    </div>
+  </div>
+</section>
+<div class="chain-divider"></div>
+
+<main>
+  <div id="catalogView">
+    <div class="toolbar">
+      <div class="results-count" id="resultsCount">0 bicicletas</div>
+      <div class="search-sort">
+        <input type="search" id="searchInput" placeholder="Buscar bicicleta...">
+        <select id="sortSelect">
+          <option value="default">Ordenar por</option>
+          <option value="price-asc">Precio: menor a mayor</option>
+          <option value="price-desc">Precio: mayor a menor</option>
+          <option value="name-asc">Nombre: A–Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid" id="productGrid"></div>
+  </div>
+
+  <div id="nosotrosView" style="display:none;padding:30px 0;max-width:640px;">
+    <h2 style="font-size:26px;margin-bottom:12px;">Sobre RODA</h2>
+    <p style="color:#3a3d38;">Somos una tienda dedicada a la venta y mantenimiento de bicicletas. Este sitio es un proyecto de práctica: catálogo, carrito de compra y panel de administración, construidos como ejercicio para el proyecto final.</p>
+  </div>
+
+  <div id="contactoView" style="display:none;padding:30px 0;max-width:480px;">
+    <h2 style="font-size:26px;margin-bottom:12px;">Contacto</h2>
+    <div class="field"><label>Nombre</label><input type="text" placeholder="Tu nombre"></div>
+    <div class="field"><label>Correo</label><input type="email" placeholder="tu@correo.com"></div>
+    <div class="field"><label>Mensaje</label><textarea placeholder="¿En qué te ayudamos?"></textarea></div>
+    <button class="submit-btn" style="max-width:220px;" onclick="showToast('Mensaje enviado (simulado)')">Enviar mensaje</button>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="adminSection">
+    <div class="admin-head">
+      <h2 style="font-size:24px;">Panel de administración</h2>
+      <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
+    </div>
+
+    <div class="admin-panel">
+      <h3 id="formTitle">Agregar bicicleta</h3>
+      <div class="form-grid">
+        <div class="field"><label>Nombre</label><input type="text" id="f-name"></div>
+        <div class="field"><label>Categoría</label>
+          <select id="f-cat">
+            <option value="montana">Montaña</option>
+            <option value="ruta">Ruta</option>
+            <option value="urbana">Urbana</option>
+            <option value="electrica">Eléctrica</option>
+            <option value="infantil">Infantil</option>
+          </select>
+        </div>
+        <div class="field"><label>Precio (Bs.)</label><input type="number" id="f-price" min="0"></div>
+        <div class="field"><label>Existencias</label><input type="number" id="f-stock" min="0"></div>
+      </div>
+      <div class="field"><label>Descripción corta</label><input type="text" id="f-desc"></div>
+      <button class="submit-btn" style="max-width:220px;" id="saveProductBtn">Guardar</button>
+      <button class="logout-btn" id="cancelEditBtn" style="display:none;margin-left:10px;">Cancelar edición</button>
+    </div>
+
+    <div class="admin-panel">
+      <h3>Inventario (<span id="invCount">0</span>)</h3>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
+          <tbody id="adminTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Cart drawer -->
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="cartDrawer">
+  <div class="drawer-head"><h2>Tu carrito</h2><button class="close-btn" id="closeCart">✕</button></div>
+  <div class="drawer-items" id="cartItems"></div>
+  <div class="drawer-foot">
+    <div class="row-between"><span>Subtotal</span><span class="mono" id="subtotalVal">Bs. 0</span></div>
+    <div class="row-between"><span>Envío</span><span class="mono" id="shippingVal">Bs. 0</span></div>
+    <div class="row-between row-total"><span>Total</span><span class="mono" id="totalVal">Bs. 0</span></div>
+    <button class="checkout-btn" id="checkoutBtn" disabled>Finalizar compra</button>
+  </div>
+</div>
+
+<!-- Login modal -->
+<div class="modal-wrap" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" data-close="loginModal">✕</button>
+    <h2>Iniciar sesión</h2>
+    <p class="hint">admin / admin123 — acceso al panel de administración</p>
+    <div class="field"><label>Usuario</label><input type="text" id="loginUser"></div>
+    <div class="field"><label>Contraseña</label><input type="password" id="loginPass"></div>
+    <div class="form-error" id="loginError">Usuario o contraseña incorrectos.</div>
+    <button class="submit-btn" id="loginSubmit">Entrar</button>
+  </div>
+</div>
+
+<!-- Checkout modal -->
+<div class="modal-wrap" id="checkoutModal">
+  <div class="modal">
+    <button class="modal-close" data-close="checkoutModal">✕</button>
+    <div id="checkoutForm">
+      <h2>Finalizar compra</h2>
+      <p class="hint">Compra simulada — no se procesan pagos reales</p>
+      <div class="field"><label>Nombre completo</label><input type="text" id="co-name"></div>
+      <div class="field"><label>Correo</label><input type="email" id="co-email"></div>
+      <div class="field"><label>Dirección de entrega</label><input type="text" id="co-address"></div>
+      <div class="field"><label>Método de pago</label>
+        <select id="co-payment">
+          <option>Contra entrega</option>
+          <option>Transferencia bancaria</option>
+        </select>
+      </div>
+      <div class="form-error" id="checkoutError">Por favor completa todos los campos.</div>
+      <button class="submit-btn" id="confirmOrderBtn">Confirmar pedido</button>
+    </div>
+    <div id="checkoutSuccess" style="display:none;" class="success-box">
+      <div class="big-check">✓</div>
+      <h2>¡Pedido confirmado!</h2>
+      <p style="color:#5b5f5a;font-size:14px;margin-top:6px;">Te contactaremos pronto para coordinar la entrega.</p>
+      <div class="order-id mono" id="orderIdDisplay"></div>
+      <button class="submit-btn" style="margin-top:20px;" id="closeSuccessBtn">Seguir comprando</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<footer>
+  <div class="footer-inner">
+    <div><strong>RODA</strong> — Tienda de bicicletas<br>La Paz, Bolivia</div>
+    <div>contacto@roda-bicicletas.com<br>+57 300 000 0000</div>
+    <div>Catálogo · Carrito · Panel administrativo</div>
+  </div>
+  <div class="note-db">NOTA: proyecto académico. Los productos se guardan en memoria durante la sesión (no hay base de datos conectada); al recargar la página el inventario vuelve a sus valores iniciales.</div>
+</footer>
+
+<script>
+/* =========================================================
+   RODA — Tienda de bicicletas
+   Catálogo + Carrito + Panel Admin (todo en un solo archivo)
+   ========================================================= */
+
+/* ---------- Datos iniciales (simulan una tabla "bicicletas") ---------- */
+let products = [
+  {id:'b1', name:'Montaña Sierra 27.5', cat:'montana', price:2600, stock:6, desc:'Cuadro de aluminio, suspensión delantera, 21 velocidades.'},
+  {id:'b2', name:'Montaña Roca X5', cat:'montana', price:3400, stock:3, desc:'Doble suspensión, frenos de disco hidráulicos.'},
+  {id:'b3', name:'Ruta Veloce Carbon', cat:'ruta', price:6200, stock:2, desc:'Cuadro de fibra de carbono, grupo Shimano 105.'},
+  {id:'b4', name:'Ruta Speedster', cat:'ruta', price:3900, stock:5, desc:'Aluminio ligero, ideal para ciclismo de fondo.'},
+  {id:'b5', name:'Urbana City Cruiser', cat:'urbana', price:1450, stock:10, desc:'Canasta frontal, guardabarros, 7 velocidades.'},
+  {id:'b6', name:'Urbana Retro Line', cat:'urbana', price:1650, stock:8, desc:'Estilo vintage, marco de acero, sillín confort.'},
+  {id:'b7', name:'Eléctrica Volt 350', cat:'electrica', price:7800, stock:4, desc:'Motor 350W, batería 40km de autonomía.'},
+  {id:'b8', name:'Eléctrica Urban-E Plus', cat:'electrica', price:9200, stock:0, desc:'Pantalla LCD, asistencia al pedaleo 5 niveles.'},
+  {id:'b9', name:'Infantil Rueditas 16"', cat:'infantil', price:620, stock:12, desc:'Rines 16", rueditas de apoyo incluidas.'},
+  {id:'b10', name:'Infantil Explorer Jr.', cat:'infantil', price:830, stock:7, desc:'Rines 20", frenos tipo V, cuadro reforzado.'}
+];
+
+const CAT_LABELS = {montana:'Montaña', ruta:'Ruta', urbana:'Urbana', electrica:'Eléctrica', infantil:'Infantil'};
+const CAT_COLORS = {montana:'#35634B', ruta:'#E8542A', urbana:'#9AA0A6', electrica:'#F2B705', infantil:'#3a6ea5'};
+
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'admin123';
+
+/* ---------- Estado ---------- */
+let cart = {};           // { productId: qty }
+let currentCat = 'todas';
+let searchTerm = '';
+let sortMode = 'default';
+let isAdmin = false;
+let editingId = null;
+
+/* ---------- Utilidades ---------- */
+function money(n){
+  return 'Bs. ' + n.toLocaleString('es-BO');
+}
+function bikeIcon(color){
+  return `<svg width="70" height="50" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="15" cy="36" r="12" stroke="${color}" stroke-width="3"/>
+    <circle cx="55" cy="36" r="12" stroke="${color}" stroke-width="3"/>
+    <path d="M15 36L30 14H42M15 36L30 22L46 36M42 14L46 36M42 14L36 8" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="55" cy="36" r="2.4" fill="${color}"/>
+  </svg>`;
+}
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._tm);
+  showToast._tm = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+
+/* ---------- Render catálogo ---------- */
+function getFilteredProducts(){
+  let list = products.slice();
+  if(currentCat !== 'todas') list = list.filter(p=>p.cat===currentCat);
+  if(searchTerm.trim()) list = list.filter(p=>p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  if(sortMode==='price-asc') list.sort((a,b)=>a.price-b.price);
+  if(sortMode==='price-desc') list.sort((a,b)=>b.price-a.price);
+  if(sortMode==='name-asc') list.sort((a,b)=>a.name.localeCompare(b.name));
+  return list;
+}
+
+function renderCatalog(){
+  const grid = document.getElementById('productGrid');
+  const list = getFilteredProducts();
+  document.getElementById('resultsCount').textContent = list.length + (list.length===1?' bicicleta':' bicicletas');
+
+  if(list.length===0){
+    grid.innerHTML = '<div class="empty-msg" style="grid-column:1/-1;">No encontramos bicicletas con esos filtros.</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(p=>{
+    const color = CAT_COLORS[p.cat];
+    const noStock = p.stock<=0;
+    return `
+    <div class="card">
+      <div class="punch"></div>
+      <div class="card-media" style="background:${color}1A;">${bikeIcon(color)}</div>
+      <div class="dash-line"></div>
+      <div class="card-body">
+        <div class="tag-cat" style="color:${color};">${CAT_LABELS[p.cat]}</div>
+        <h3>${p.name}</h3>
+        <div class="card-desc">${p.desc}</div>
+        <div class="card-foot">
+          <span class="price mono">${money(p.price)}</span>
+          <span class="stock ${p.stock<=2 && p.stock>0?'low':''}">${noStock?'agotado':p.stock+' disp.'}</span>
+        </div>
+        <button class="add-btn" ${noStock?'disabled':''} onclick="addToCart('${p.id}')">${noStock?'Sin existencias':'Agregar al carrito'}</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- Carrito ---------- */
+function addToCart(id){
+  const p = products.find(x=>x.id===id);
+  if(!p || p.stock<=0) return;
+  const inCart = cart[id]||0;
+  if(inCart >= p.stock){ showToast('No hay más existencias disponibles'); return; }
+  cart[id] = inCart+1;
+  renderCart();
+  showToast(p.name + ' agregada al carrito');
+}
+function changeQty(id, delta){
+  const p = products.find(x=>x.id===id);
+  let qty = (cart[id]||0) + delta;
+  if(qty<=0){ delete cart[id]; }
+  else if(qty > p.stock){ showToast('No hay más existencias disponibles'); return; }
+  else { cart[id] = qty; }
+  renderCart();
+}
+function removeFromCart(id){
+  delete cart[id];
+  renderCart();
+}
+function cartTotalItems(){
+  return Object.values(cart).reduce((a,b)=>a+b,0);
+}
+function renderCart(){
+  document.getElementById('cartCount').textContent = cartTotalItems();
+  const wrap = document.getElementById('cartItems');
+  const ids = Object.keys(cart);
+
+  if(ids.length===0){
+    wrap.innerHTML = '<div class="empty-msg">Tu carrito está vacío.</div>';
+  } else {
+    wrap.innerHTML = ids.map(id=>{
+      const p = products.find(x=>x.id===id);
+      if(!p) return '';
+      const color = CAT_COLORS[p.cat];
+      return `
+      <div class="cart-item">
+        <div class="ci-media" style="background:${color}1A;">${bikeIcon(color)}</div>
+        <div class="ci-info">
+          <h4>${p.name}</h4>
+          <div class="ci-price mono">${money(p.price)}</div>
+          <div class="qty-stepper">
+            <button onclick="changeQty('${id}',-1)">−</button>
+            <span>${cart[id]}</span>
+            <button onclick="changeQty('${id}',1)">+</button>
+          </div>
+        </div>
+        <button class="remove-x" onclick="removeFromCart('${id}')">Quitar</button>
+      </div>`;
+    }).join('');
+  }
+
+  const subtotal = ids.reduce((sum,id)=>{
+    const p = products.find(x=>x.id===id);
+    return sum + (p ? p.price*cart[id] : 0);
+  },0);
+  const shipping = subtotal>0 ? (subtotal>4000?0:60) : 0;
+  const total = subtotal + shipping;
+
+  document.getElementById('subtotalVal').textContent = money(subtotal);
+  document.getElementById('shippingVal').textContent = shipping===0 ? 'Gratis' : money(shipping);
+  document.getElementById('totalVal').textContent = money(total);
+  document.getElementById('checkoutBtn').disabled = ids.length===0;
+}
+
+/* ---------- Drawer / modales open-close ---------- */
+function openDrawer(){
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeDrawer(){
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+document.getElementById('cartBtn').onclick = openDrawer;
+document.getElementById('closeCart').onclick = closeDrawer;
+document.getElementById('overlay').onclick = closeDrawer;
+document.querySelectorAll('[data-close]').forEach(btn=>{
+  btn.onclick = ()=>closeModal(btn.dataset.close);
+});
+
+/* ---------- Login ---------- */
+document.getElementById('loginBtn').onclick = ()=>openModal('loginModal');
+
+document.getElementById('loginSubmit').onclick = ()=>{
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value.trim();
+  if(u===ADMIN_USER && p===ADMIN_PASS){
+    isAdmin = true;
+    document.getElementById('adminNavBtn').style.display = 'inline';
+    document.getElementById('loginBtn').textContent = 'Sesión: admin';
+    document.getElementById('loginError').style.display = 'none';
+    closeModal('loginModal');
+    showToast('Sesión iniciada como administrador');
+    document.getElementById('loginUser').value='';
+    document.getElementById('loginPass').value='';
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+};
+
+document.getElementById('logoutBtn').onclick = ()=>{
+  isAdmin = false;
+  document.getElementById('adminNavBtn').style.display = 'none';
+  document.getElementById('loginBtn').textContent = 'Iniciar sesión';
+  switchView('catalog');
+  showToast('Sesión cerrada');
+};
+
+/* ---------- Navegación entre vistas ---------- */
+function switchView(view){
+  document.getElementById('catalogView').style.display = view==='catalog' ? '' : 'none';
+  document.getElementById('nosotrosView').style.display = view==='nosotros' ? '' : 'none';
+  document.getElementById('contactoView').style.display = view==='contacto' ? '' : 'none';
+  document.getElementById('adminSection').style.display = view==='admin' ? '' : 'none';
+  document.getElementById('heroSection').style.display = view==='catalog' ? '' : 'none';
+  document.querySelector('.chain-divider').style.display = view==='catalog' ? '' : 'none';
+
+  document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('active', a.dataset.view===view));
+  if(view==='admin') renderAdminTable();
+}
+document.querySelectorAll('nav a[data-view]').forEach(a=>{
+  a.onclick = (e)=>{
+    e.preventDefault();
+    if(a.dataset.view==='admin' && !isAdmin) return;
+    switchView(a.dataset.view);
+  };
+});
+
+/* ---------- Filtros / búsqueda / orden ---------- */
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.onclick = ()=>{
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    currentCat = chip.dataset.cat;
+    renderCatalog();
+  };
+});
+document.getElementById('searchInput').oninput = (e)=>{
+  searchTerm = e.target.value;
+  renderCatalog();
+};
+document.getElementById('sortSelect').onchange = (e)=>{
+  sortMode = e.target.value;
+  renderCatalog();
+};
+
+/* ---------- Checkout ---------- */
+document.getElementById('checkoutBtn').onclick = ()=>{
+  closeDrawer();
+  document.getElementById('checkoutForm').style.display='block';
+  document.getElementById('checkoutSuccess').style.display='none';
+  openModal('checkoutModal');
+};
+document.getElementById('confirmOrderBtn').onclick = ()=>{
+  const name = document.getElementById('co-name').value.trim();
+  const email = document.getElementById('co-email').value.trim();
+  const addr = document.getElementById('co-address').value.trim();
+  if(!name || !email || !addr){
+    document.getElementById('checkoutError').style.display='block';
+    return;
+  }
+  document.getElementById('checkoutError').style.display='none';
+
+  // descontar stock (simulado)
+  Object.keys(cart).forEach(id=>{
+    const p = products.find(x=>x.id===id);
+    if(p) p.stock = Math.max(0, p.stock - cart[id]);
+  });
+  cart = {};
+  renderCart();
+  renderCatalog();
+
+  const orderId = 'RODA-' + Math.floor(100000+Math.random()*900000);
+  document.getElementById('orderIdDisplay').textContent = 'Pedido No. ' + orderId;
+  document.getElementById('checkoutForm').style.display='none';
+  document.getElementById('checkoutSuccess').style.display='block';
+
+  document.getElementById('co-name').value='';
+  document.getElementById('co-email').value='';
+  document.getElementById('co-address').value='';
+};
+document.getElementById('closeSuccessBtn').onclick = ()=>closeModal('checkoutModal');
+
+/* ---------- Admin: tabla ---------- */
+function renderAdminTable(){
+  const body = document.getElementById('adminTableBody');
+  document.getElementById('invCount').textContent = products.length;
+  body.innerHTML = products.map(p=>`
+    <tr>
+      <td>${p.name}</td>
+      <td>${CAT_LABELS[p.cat]}</td>
+      <td class="mono">${money(p.price)}</td>
+      <td class="mono">${p.stock}</td>
+      <td class="row-actions">
+        <button class="btn-edit" onclick="startEdit('${p.id}')">Editar</button>
+        <button class="btn-delete" onclick="deleteProduct('${p.id}')">Eliminar</button>
+      </td>
+    </tr>`).join('');
+}
+
+function startEdit(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  editingId = id;
+  document.getElementById('f-name').value = p.name;
+  document.getElementById('f-cat').value = p.cat;
+  document.getElementById('f-price').value = p.price;
+  document.getElementById('f-stock').value = p.stock;
+  document.getElementById('f-desc').value = p.desc;
+  document.getElementById('formTitle').textContent = 'Editar bicicleta';
+  document.getElementById('saveProductBtn').textContent = 'Guardar cambios';
+  document.getElementById('cancelEditBtn').style.display = 'inline-block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetForm(){
+  editingId = null;
+  ['f-name','f-price','f-stock','f-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-cat').value='montana';
+  document.getElementById('formTitle').textContent = 'Agregar bicicleta';
+  document.getElementById('saveProductBtn').textContent = 'Guardar';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+}
+document.getElementById('cancelEditBtn').onclick = resetForm;
+
+document.getElementById('saveProductBtn').onclick = ()=>{
+  const name = document.getElementById('f-name').value.trim();
+  const cat = document.getElementById('f-cat').value;
+  const price = Number(document.getElementById('f-price').value);
+  const stock = Number(document.getElementById('f-stock').value);
+  const desc = document.getElementById('f-desc').value.trim();
+
+  if(!name || !price || price<=0 || stock<0 || isNaN(stock)){
+    showToast('Completa nombre, precio y existencias válidas');
+    return;
+  }
+
+  if(editingId){
+    const p = products.find(x=>x.id===editingId);
+    Object.assign(p, {name, cat, price, stock, desc});
+    showToast('Bicicleta actualizada');
+  } else {
+    const id = 'b' + (Date.now());
+    products.push({id, name, cat, price, stock, desc});
+    showToast('Bicicleta agregada al inventario');
+  }
+  resetForm();
+  renderAdminTable();
+  renderCatalog();
+};
+
+function deleteProduct(id){
+  if(!confirm('¿Eliminar esta bicicleta del inventario?')) return;
+  products = products.filter(p=>p.id!==id);
+  delete cart[id];
+  renderAdminTable();
+  renderCatalog();
+  renderCart();
+  showToast('Bicicleta eliminada');
+}
+
+/* ---------- Inicio ---------- */
+renderCatalog();
+renderCart();
+</script>
+</body>
+</html>
